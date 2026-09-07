@@ -1,34 +1,43 @@
-import React, { useState } from 'react';
-import { useTodo } from '../context';
+import { useTodoContext } from '../context/TodoContext';
+import { useState } from 'react';
+const TodoForm = () => {
 
-function TodoForm() {
-  const [todo, setTodo] = useState('');
-  const { addTodo } = useTodo();
+  const [todo,setTodo] = useState("");
+  const {addTodo} = useTodoContext();
 
-  const add = (e) => {
-    e.preventDefault();
-    if (!todo.trim()) return;
-    addTodo({ todo, completed: false });
-    setTodo('');
-  };
+  const handleSubmit = (event)=>{
+    event.preventDefault();
+    const data = todo.trim();
+    if(data){
+      addTodo({
+        text:data,
+        completed:false
+      }); 
+    }
+    else{
+      alert("Make a todo bro");
+    }
+    setTodo("");
+      return;
+  }
 
   return (
-    <form onSubmit={add} className="flex shadow-lg rounded-xl overflow-hidden">
-      <input
-        type="text"
-        placeholder="✍️ Write a Todo..."
-        className="w-full px-4 py-2 bg-white/40 backdrop-blur-md text-black placeholder:text-gray-600 outline-none border border-white/30"
-        value={todo}
-        onChange={(e) => setTodo(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-gradient-to-r from-blue-400 to-green-400 text-white font-semibold hover:opacity-90 transition duration-200"
-      >
-        ➕ Add
-      </button>
-    </form>
-  );
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='Todo'>
+          Todo:
+        </label>
+        <input
+        type='text'
+        placeholder='What do you plan on doing today?'
+        value={todo.text}
+        onChange={((event)=>setTodo(event.target.value))}/>
+        <button
+        type='submit'>Add</button>
+      </form>
+    </div>
+  )
 }
 
-export default TodoForm;
+export default TodoForm
+
